@@ -20,7 +20,7 @@ class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = (
-            'question', 'created_by', 'pub_date', 'choice')
+            'question', 'created_by', 'pub_date', 'choice', 'owner')
 
 
 class UserSerializer(serializers.ModelSerializer):
