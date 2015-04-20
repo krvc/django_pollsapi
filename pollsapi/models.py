@@ -6,7 +6,7 @@ class Poll(models.Model):
     question = models.CharField(max_length=100)
     created_by = models.ForeignKey(User)
     pub_date = models.DateTimeField()
-    owner = models.ForeignKey('auth.User', related_name='poll')
+    owner = models.ForeignKey('auth.User', related_name='polls')
 
     def __unicode__(self):
         return self.question
