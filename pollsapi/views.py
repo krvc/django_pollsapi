@@ -15,6 +15,9 @@ class PollList(generics.ListCreateAPIView):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class PollDetail(generics.RetrieveUpdateDestroyAPIView):
     """
