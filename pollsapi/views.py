@@ -1,7 +1,9 @@
-from .serializers import PollSerializer
 from rest_framework import generics
 
+from django.contrib.auth.models import User
+
 from .models import Poll
+from .serializers import PollSerializer, UserSerializer
 
 
 class PollList(generics.ListCreateAPIView):
@@ -21,3 +23,13 @@ class PollDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
