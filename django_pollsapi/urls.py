@@ -10,7 +10,9 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^polls/', pollsapi.views.PollList.as_view()),
-    url(r'poll/(?P<pk>[0-9]+)/$',pollsapi.views.PollDetail.as_view()),
+    url(r'poll/(?P<pk>[0-9]+)/$', pollsapi.views.PollDetail.as_view()),
+    url(r'^users/$', pollsapi.views.UserList.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/$', pollsapi.views.UserDetail.as_view()),
     # url(r'^login/', pollsapi.views.Login.as_view()),
 
 ]
