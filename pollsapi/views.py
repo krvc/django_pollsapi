@@ -33,8 +33,7 @@ class PollDetail(generics.RetrieveUpdateDestroyAPIView):
                           IsOwnerOrReadOnly,)
 
 
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
+class UserCreate(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
