@@ -1,26 +1,52 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from django.contrib.auth.models import User
 
-from .models import Poll, Choice
+from .models import Poll, Choice, Vote
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        validators=[
+            UniqueTogetherValidator(
+                queryset=Vote.objects.all(),
+                fields=('poll', 'voted_by'),
+                message="User already voted for this poll"
+            )
+        ]
+
+    def create(self, validated_data):
+        poll = validated_data["poll"]
+        choice = validated_data["choice"]
+        if not choice in poll.choices.all():
+            raise serializers.ValidationError('Choice must be valid.')
+        vote = super(VoteSerializer, self).create(validated_data)
+        return vote
 
 
 class ChoiceSerializer(serializers.ModelSerializer):
+    votes = VoteSerializer(many=True, required=False)
 
     class Meta:
         model = Choice
-        fields = (
-            'poll', 'choice_text', 'vote')
 
 
 class PollSerializer(serializers.ModelSerializer):
-    choice = ChoiceSerializer(many=True)
-    owner = serializers.ReadOnlyField(source='owner.username')
-
+    choices = ChoiceSerializer(many=True, read_only=True, required=False)
+    
     class Meta:
         model = Poll
-        fields = (
-            'question', 'created_by', 'pub_date', 'choice', 'owner')
+
+    def create(self, validated_data):
+        choice_strings = self.context.get("request").data.get("choice_strings")
+        if not choice_strings:
+            raise serializers.ValidationError('choice_strings needed.')
+        poll = super(PollSerializer, self).create(validated_data)
+        for choice in choice_strings:
+            Choice.objects.create(poll=poll, choice_text=choice)
+        return poll
 
 
 class UserSerializer(serializers.ModelSerializer):
