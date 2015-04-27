@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, authentication
+from rest_framework import generics, permissions
 
 from django.contrib.auth.models import User
 
@@ -13,9 +13,9 @@ class PollList(generics.ListCreateAPIView):
     List all polls, or create a new poll.
     """
 
-    authentication_classes = (authentication.BasicAuthentication,)
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class PollDetail(generics.RetrieveDestroyAPIView):
@@ -23,26 +23,43 @@ class PollDetail(generics.RetrieveDestroyAPIView):
     Create a Poll, delete a poll
     """
 
-    authentication_classes = (authentication.BasicAuthentication,)
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ChoiceDetail(generics.RetrieveUpdateAPIView):
-    authentication_classes = (authentication.BasicAuthentication,)
+    """
+    Retrieve a choice, update a choice
+    """
+
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class CreateVote(generics.CreateAPIView):
-    authentication_classes = (authentication.BasicAuthentication,)
+    """
+    Cast vote
+    """
+
     serializer_class = VoteSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UserCreate(generics.CreateAPIView):
+    """
+    Create an User
+    """
+
+    authentication_classes = ()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    """
+    Retrieve a User
+    """
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
