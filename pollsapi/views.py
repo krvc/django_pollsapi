@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
 
 from django.contrib.auth.models import User
 
@@ -15,7 +15,6 @@ class PollList(generics.ListCreateAPIView):
 
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
 
 class PollDetail(generics.RetrieveDestroyAPIView):
@@ -25,7 +24,6 @@ class PollDetail(generics.RetrieveDestroyAPIView):
 
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ChoiceDetail(generics.RetrieveUpdateAPIView):
@@ -35,7 +33,6 @@ class ChoiceDetail(generics.RetrieveUpdateAPIView):
 
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
 
 class CreateVote(generics.CreateAPIView):
@@ -44,7 +41,6 @@ class CreateVote(generics.CreateAPIView):
     """
 
     serializer_class = VoteSerializer
-    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UserCreate(generics.CreateAPIView):
@@ -53,6 +49,7 @@ class UserCreate(generics.CreateAPIView):
     """
 
     authentication_classes = ()
+    permission_classes = ()
     serializer_class = UserSerializer
 
 
