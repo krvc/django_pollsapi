@@ -1,0 +1,18 @@
+## Customize the test machine
+machine:
+
+  timezone:
+    Asia/Kolkata # Set the timezone
+
+  # Version of python to use
+  python:
+    version: 2.7.5
+
+dependencies:
+  pre:
+    - pip install requirements.txt
+
+test:
+  override:
+    - flake8 django_pollsapi/
+    - python manage.py test
